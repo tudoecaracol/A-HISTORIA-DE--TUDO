@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 1px 0;
+}
+
+
+
+#botaoMusica {
+    font-size: 24px; /* Aumenta o tamanho do ícone */
+    padding: 10px 20px; /* Espaçamento interno */
+    background-color: #4caf50; /* Cor de fundo verde */
+    color: white; /* Cor do texto */
+    border: none; /* Remove bordas */
+    border-radius: 8px; /* Arredonda as bordas */
+    cursor: pointer; /* Mostra o ponteiro ao passar o mouse */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Adiciona transições suaves */
+}
+
+/* Alteração de cor ao passar o mouse */
+#botaoMusica:hover {
+    background-color: #45a049; /* Verde mais escuro */
+}
+
+/* Efeito de clique */
+#botaoMusica:active {
+    transform: scale(0.95); /* Botão ligeiramente menor ao clicar */
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #df3838;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: bold;
+
+}
+
+button:hover {
+    background-color: #ffc300;
+}
+
+#progressContainer {
+    width: 80%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 10px auto;
+    overflow: hidden;
+}
+
+#progressBar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff5733, #ffc300);
+    transition: width 0.2s ease-in-out;
+}
+
+#spiralCanvas {
+    display: block;
+    margin: 20px auto;
+    background: #000;
+}
+
+.control {
+    margin: 10px 0;
+}
+
+.control input[type="range"], .control input[type="color"] {
+    margin-left: 10px;
+}

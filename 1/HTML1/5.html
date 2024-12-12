@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso com Fotos</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        img {
+            width: 80%;
+            height: auto;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #slider {
+            width: 80%;
+            margin-top: 20px;
+        }
+        #sliderValue {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Exibindo a imagem -->
+    <img id="photo" src="foto1.jpg" alt="Foto Progresso">
+
+    <!-- Controle deslizante para navegar pelas fotos -->
+    <input type="range" id="slider" min="1" max="10" value="1">
+    <div id="sliderValue">Foto 1</div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const photo = document.getElementById('photo');
+        const sliderValue = document.getElementById('sliderValue');
+
+        // Função para atualizar a imagem com base no valor do slider
+        slider.addEventListener('input', () => {
+            const photoNumber = slider.value;
+            photo.src = `../IMAGENS1/${photoNumber}.png`; // Alterando o caminho da imagem
+            sliderValue.textContent = `Foto ${photoNumber}`; // Atualizando o texto com o número da foto
+        });
+    </script>
+
+</body>
+</html>

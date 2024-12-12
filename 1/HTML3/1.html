@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Estados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        #canvas {
+            margin: 20px auto;
+            border: 1px solid #000;
+            width: 720px;
+            height: 720px;
+            position: relative;
+            background-color: #fff;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualização de Estados</h1>
+    <div id="canvas"></div>
+    <div class="button-container">
+        <button onclick="drawState(1)">Estado 1</button>
+        <button onclick="drawState(2)">Estado 2</button>
+        <button onclick="drawState(3)">Estado 3</button>
+        <button onclick="drawState(4)">Estado 4</button>
+        <button onclick="drawState(5)">Estado 5</button>
+        <button onclick="drawState(6)">Estado 6</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+
+        // Função para limpar o canvas
+        function clearCanvas() {
+            canvas.innerHTML = "";
+        }
+
+        // Função para desenhar círculos
+        function drawCircle(x, y, radius) {
+        const circle = document.createElement("div");
+         circle.style.width = `${radius * 2}px`;
+        circle.style.height = `${radius * 2}px`;
+         circle.style.borderRadius = "50%";
+         circle.style.position = "absolute";
+         circle.style.left = `${x - radius}px`;
+            circle.style.top = `${y - radius}px`;
+             circle.style.backgroundColor = "#007bff";
+             circle.style.border = "2px solid black"; // Adiciona a borda de 1px
+    canvas.appendChild(circle);
+}
+
+
+        // Função para desenhar os diferentes estados
+        function drawState(state) {
+            clearCanvas();
+
+            switch (state) {
+                case 1:
+
+                    
+                    
+                    
+                    // Estado 1: Apenas o retângulo vazio
+                    break;
+                case 2:
+                    // Estado 2: Um círculo centralizado
+                    drawCircle(360, 360, 360);
+                    break;
+                case 3:
+                    // Estado 3: Dois círculos lado a lado
+                    drawCircle(180, 360, 180);
+                    drawCircle(540, 360, 180);
+                    break;
+                case 4:
+                    // Estado 4: Três círculos formando um triângulo
+                    drawCircle(350, 295, 100);
+                    drawCircle(250, 470, 100);
+                    drawCircle(455, 470, 100);
+                    break;
+                case 5:
+                    // Estado 5: Cinco círculos em uma formação densa
+                    drawCircle(360, 180, 80);
+                    drawCircle(260, 300, 80);
+                    drawCircle(460, 300, 80);
+                    drawCircle(310, 420, 80);
+                    drawCircle(410, 420, 80);
+                    break;
+                case 6:
+                    // Estado 6: Um padrão mais preenchido
+                    drawCircle(295, 250, 50);
+                    drawCircle(400, 250, 50);
+                    drawCircle(230, 330, 50);
+                    drawCircle(230, 435, 50);
+                    drawCircle(400, 500, 50);
+                    drawCircle(300, 500, 50);
+                    drawCircle(475, 320, 50);
+                    drawCircle(470, 425, 50);
+                    break;
+                default:
+                    console.error("Estado inválido");
+            }
+        }
+
+        // Desenha o Estado 1 ao carregar a página
+        drawState(1);
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequência de Fibonacci com Loop</title>
+</head>
+<body>
+    <h1>Sequência de Fibonacci</h1>
+    <div id="output"></div>
+
+    <script>
+        // Inicializando os primeiros dois números
+        let a = 1, b = 1;
+        let output = document.getElementById('output');
+
+        // Exibe o primeiro número
+        output.innerHTML += a + '<br>';
+
+        // Função para gerar a sequência a cada segundo
+        setInterval(function() {
+            output.innerHTML += `${a} + ${b} = ${a + b} <br>`;
+            // Atualizando os valores de a e b para a próxima iteração
+            let temp = a;
+            a = b;
+            b = temp + b;
+        }, 1000); // 1000 milissegundos = 1 segundo
+    </script>
+</body>
+</html>

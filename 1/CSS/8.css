@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#container {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.fibonacci-box {
+    position: absolute;
+    background-color: rgba(0, 123, 255, 0.7);
+    border: 1px solid #007bff;
+    transform-origin: center;
+    animation: grow 1s linear infinite;
+}

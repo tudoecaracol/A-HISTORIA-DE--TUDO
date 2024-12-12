@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadrados em Perspectiva com Controle Deslizante</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        #perspectiveSlider {
+            width: 300px;
+            margin-top: 20px;
+        }
+        #sliderValue {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <button id="startButton">Iniciar Animação</button>
+
+    <!-- Controle deslizante para ajustar a perspectiva -->
+    <input type="range" id="perspectiveSlider" min="0" max="100" value="0">
+    <div id="sliderValue">Quadrados: 0</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startButton = document.getElementById('startButton');
+        const perspectiveSlider = document.getElementById('perspectiveSlider');
+        const sliderValue = document.getElementById('sliderValue');
+
+        // Função para desenhar um quadrado na posição (x, y) com tamanho especificado
+        function drawSquare(x, y, size, perspective) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(perspective, perspective); // Aplicando a perspectiva ao quadrado
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(-size / 2, -size / 2, size, size);
+            ctx.restore();
+        }
+
+        // Função para calcular a sequência de Fibonacci
+        function fibonacci(n) {
+            const fib = [0, 1];
+            for (let i = 2; i < n; i++) {
+                fib.push(fib[i - 1] + fib[i - 2]);
+            }
+            return fib;
+        }
+
+        // Função para desenhar os quadrados em perspectiva com base no controle deslizante
+        function draw(perspectiveValue) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar o canvas
+
+            const fibNumbers = fibonacci(26); // Gerar os primeiros 26 números de Fibonacci (nós usamos 25)
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxSquares = Math.round(perspectiveSlider.value); // Quantidade de quadrados baseados no valor do slider
+
+            for (let i = 1; i <= maxSquares; i++) {
+                const size = fibNumbers[i] * 10; // Multiplicando pelo fator de escala
+                const perspective = perspectiveValue - (i * 0.05); // Aplicando perspectiva com base no valor do slider
+                const offset = i * 10; // Deslocamento para distribuir os quadrados
+
+                drawSquare(centerX + offset, centerY, size, perspective); // Desenhar o quadrado com a perspectiva
+            }
+        }
+
+        // Atualizar a quantidade de quadrados e a perspectiva quando o slider for movido
+        perspectiveSlider.addEventListener('input', () => {
+            const perspectiveValue = 1 - (perspectiveSlider.value / 100); // Converter valor do slider em perspectiva
+            sliderValue.textContent = `Quadrados: ${Math.round(perspectiveSlider.value)}`; // Exibir a quantidade de quadrados
+            draw(perspectiveValue); // Chama a função para desenhar os quadrados com a nova perspectiva
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+/* styles.css */
+
+/* Define a fonte principal e um fundo claro */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Estilo do título principal */
+h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+/* Estilo do parágrafo */
+p {
+    font-size: 1.2em;
+    line-height: 0.8;
+    text-align: center;
+    margin-top: 1px;
+    color: #34495e;
+    
+    
+}
+
+/* Estilo dos links de navegação */
+#nav a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+/* Mudança de cor ao passar o mouse nos links */
+nav a:hover {
+    color: #1abc9c;
+}
+
+#rodar{
+    
+    
+    animation: rotacao 900ms linear infinite;
+
+}
+
+img{
+    display: block;
+    max-width: 100px;
+    margin-left: 44%;
+}
+#px300{
+    max-width: 300px;
+    margin-left: 20%;
+
+}
+
+/* Define a animação de rotação */
+@keyframes rotacao {
+    from {
+        transform: rotate(0deg); /* Início da rotação */
+    }
+    to {
+        transform: rotate(360deg); /* Fim da rotação */
+    }
+}
+
+#zero{
+    font-size: 70px;;
+}
+
+
+canvas {
+    border: 1px solid #000;
+    display: block;
+    margin: 0 auto;
+    background: #f0f0f0;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+}

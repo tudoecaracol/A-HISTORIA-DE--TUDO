@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequência de Fibonacci em Espiral</title>
+    <style>
+        /* Centraliza todo o conteúdo da página */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        /* Caixa para conter os quadrados, com um grid central */
+        #output {
+            position: absolute;
+            display: grid;
+            justify-items: center;
+            align-items: center;
+            transform-origin: center;
+        }
+
+        .square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: width 0.3s, height 0.3s, font-size 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sequência de Fibonacci em Espiral</h1>
+    <div id="output"></div>
+
+    <script>
+        let a = 0, b = 1; // Primeiros números da sequência
+        let output = document.getElementById('output');
+        let squareSize = 30; // Tamanho inicial do quadrado
+        let directions = ['right', 'down', 'left', 'up']; // Direções: direita, baixo, esquerda, cima
+        let currentDirection = 0; // Direção inicial
+        let x = 0, y = 0; // Posições iniciais
+        let executions = 0; // Contador de execuções
+        const maxExecutions = 5; // Limite de execuções
+
+        // Função para resetar o script
+        function reset() {
+            a = 0;
+            b = 1;
+            squareSize = 30;
+            currentDirection = 0;
+            x = 0;
+            y = 0;
+            executions = 0;
+            output.innerHTML = '';
+            output.innerHTML += `<div class="square" style="width: ${squareSize}px; height: ${squareSize}px; font-size: ${squareSize / 3}px;">${a}</div>`;
+        }
+
+        // Exibe o primeiro número como quadrado
+        output.innerHTML += `<div class="square" style="width: ${squareSize}px; height: ${squareSize}px; font-size: ${squareSize / 3}px;">${a}</div>`;
+
+        // Função de execução periódica
+        const interval = setInterval(function() {
+            if (executions >= maxExecutions) {
+                reset();
+                return;
+            }
+
+            // Aumenta o tamanho do quadrado
+            squareSize = squareSize + squareSize * 0.5;
+
+            // Define o estilo do quadrado e posição
+            let newSquare = `<div class="square" style="position: absolute; left: ${x}px; top: ${y}px; width: ${squareSize}px; height: ${squareSize}px; font-size: ${squareSize / 3}px;">${a}</div>`;
+            output.innerHTML += newSquare;
+
+            // Atualiza a posição e valores da sequência
+            if (directions[currentDirection] === 'right') x += squareSize;
+            else if (directions[currentDirection] === 'down') y += squareSize;
+            else if (directions[currentDirection] === 'left') x -= squareSize;
+            else if (directions[currentDirection] === 'up') y -= squareSize;
+
+            // Atualiza os valores da sequência Fibonacci
+            let temp = a;
+            a = b;
+            b = temp + b;
+
+            // Altera a direção
+            currentDirection = (currentDirection + 1) % 4;
+
+            // Incrementa o contador de execuções
+            executions++;
+        }, 1000); // Intervalo de 1 segundo
+    </script>
+</body>
+</html>

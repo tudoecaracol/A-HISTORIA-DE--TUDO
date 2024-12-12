@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animação Fibonacci</title>
+<link rel="stylesheet" href="../CSS/9.css">
+<link rel="stylesheet" href="../CSS/8.css">
+    <link rel="stylesheet" href="../CSS/1.css">
+    <link rel="stylesheet" href="../CSS/3.css">
+    <link rel="stylesheet" href="../CSS/5.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            background-color: #ffffff;
+            overflow: hidden;
+            border: 2px solid #000;
+        }
+
+        .fibonacci-box {
+            position: absolute;
+            background-color: rgba(0, 123, 255, 0.7);
+            border: 1px solid #007bff;
+            animation: grow 1s linear;
+        }
+
+        @keyframes grow {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="nav" >
+        <a href="../index.html">Zerar</a><br>
+        <a href="9.html">+1</a><br>
+        <a href="7.html">-1</a>
+
+        <p>"OK , A PARTIr DE AGORA A PARADA FICA SERIA"</p>
+    
+    
+    
+    <div id="container"></div>
+
+    <script>
+        let a = 1; // Primeiro número de Fibonacci
+        let b = 1; // Segundo número de Fibonacci
+        let contador = 0;
+        const container = document.getElementById('container');
+        const maxSize = 600; // Tamanho máximo do container (600x600 px)
+
+        function criarQuadradoFibonacci(tamanho, x, y) {
+            const div = document.createElement('div');
+            div.className = 'fibonacci-box';
+            div.style.width = `${tamanho}px`;
+            div.style.height = `${tamanho}px`;
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+            container.appendChild(div);
+        }
+
+        function proximaPosicao(tamanho, direcao) {
+            switch (direcao) {
+                case 0: return [0, -tamanho]; // Cima
+                case 1: return [tamanho, 0];  // Direita
+                case 2: return [0, tamanho];  // Baixo
+                case 3: return [-tamanho, 0]; // Esquerda
+                default: return [0, 0];
+            }
+        }
+
+        function animarFibonacci() {
+            let x = 300; // Ponto inicial X (metade do container)
+            let y = 300; // Ponto inicial Y (metade do container)
+            let direcao = 0; // Começa indo para cima (0 = cima, 1 = direita, 2 = baixo, 3 = esquerda)
+
+            const intervalo = setInterval(() => {
+                const tamanho = a;
+                
+                // Adiciona o quadrado de Fibonacci
+                criarQuadradoFibonacci(tamanho, x, y);
+
+                // Calcula a próxima posição com base na direção atual
+                const [dx, dy] = proximaPosicao(tamanho, direcao);
+                x += dx;
+                y += dy;
+
+                // Verifica se ultrapassou os limites do container e reinicia a animação
+                if (x < 0 || y < 0 || x + tamanho > maxSize || y + tamanho > maxSize) {
+                    x = 300; // Reinicia no centro
+                    y = 300;
+                    direcao = 0;
+                    a = 1;
+                    b = 1;
+                    container.innerHTML = ''; // Limpa o container
+                    return;
+                }
+
+                // Atualiza o número de Fibonacci e a direção
+                const proximo = a + b;
+                a = b;
+                b = proximo;
+                direcao = (direcao + 1) % 4; // Gira a direção (0 -> 1 -> 2 -> 3 -> 0)
+                
+            }, 1000); // 1000ms = 1 segundo
+        }
+
+        animarFibonacci();
+    </script>
+</body>
+</html>

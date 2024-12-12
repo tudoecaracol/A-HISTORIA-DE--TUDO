@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espiral Giratória com Perspectiva e Música</title>
+    <link rel="stylesheet" href="22.css">
+
+</head>
+<body>
+    <h1>Tocar Música com Espiral Giratória</h1>
+    <audio id="audioPlayer">
+        <source src="6_SimOuNao.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+    
+
+    <button id="botaoMusica" onclick="alternarMusica()" aria-label="Tocar música">
+        ▶️
+    </button>
+
+
+    <!-- <button onclick="alternarMusica()" aria-label="Tocar música">Tocar Música</button>
+    <button onclick="pausarMusica()" aria-label="Pausar música">Pausar Música</button> -->
+
+    <div id="progressContainer">
+        <div id="progressBar"></div>
+    </div>
+
+    <div id="status" aria-live="polite">Música parada</div>
+
+    <div id="controlPanel">
+        <div class="control">
+            <label for="colorPicker">Cor da Espiral:</label>
+            <input type="color" id="colorPicker" value="#ff5733">
+        </div>
+
+    <div id="scaleContainer">
+        <input type="file" id="musicUploader" accept="audio/*">
+        <div id="scale">Escala de Intensidade...
+       
+            <span id="scaleValue">0</span> / 10
+        </div>
+    </div>
+
+    <canvas id="spiralCanvas" width="700" height="500"></canvas>
+
+    
+
+        <div class="control">
+            <label for="frequencyRange"> .....  Faixa de Frequência (Hz):</label>
+            <input type="range" id="frequencyRange" min="20" max="2000" value="500">
+        </div>
+
+        <div class="control">
+            <label for="spiralSpeed">Velocidade da Espiral:</label>
+            <input type="range" id="spiralSpeed" min="0.05" max="0.5" step="0.01" value="0.1">
+        </div>
+
+        <div class="control">
+            <input type="checkbox" id="colorOscillation">
+            <label for="colorOscillation">Oscilar cor</label>
+            <input type="checkbox" id="frequencyOscillation">
+            <label for="frequencyOscillation">Oscilar frequência</label>
+            <input type="checkbox" id="speedOscillation">
+            <label for="speedOscillation">Oscilar velocidade</label>
+        </div>
+
+        <button onclick="festaAleatoria()">Festa Aleatória</button>
+        <button onclick="pararFesta()">Parar Festa</button>
+        <button onclick="mudarSentido()">Alterar Sentido da Espiral</button>
+        <button onclick="girarCanvas()">Tudo Girando</button>
+    </div>
+
+    <script src="22.js"></script>
+    <script src="23.js"></script>
+    <script src="24.js"></script>
+    <script src="25.js"></script>
+</body>
+</html>

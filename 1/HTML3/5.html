@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Estados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        #canvas {
+            margin: 20px auto;
+            border: 1px solid #000;
+            width: 720px;
+            height: 720px;
+            position: relative;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid black;
+            background-color: #007bff;
+            transition: all 0.8s ease; /* Animação suave */
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <h1>Visualização de Estados</h1>
+    <div id="canvas"></div>
+    <div class="button-container">
+        <button onclick="startTransition()">Iniciar Transição</button>
+        <button onclick="drawStateWithAnimation(1)">Estado 1</button>
+        <button onclick="drawStateWithAnimation(2)">Estado 2</button>
+        <button onclick="drawStateWithAnimation(3)">Estado 3</button>
+        
+    </div>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+
+        // Função para limpar o canvas com efeito de destruição
+        function clearCanvas() {
+            const circles = canvas.querySelectorAll(".circle");
+            circles.forEach(circle => {
+                const randomAngle = Math.random() * 2 * Math.PI; // Ângulo aleatório
+                const distance = Math.random() * 200 + 50; // Distância aleatória
+                const xOffset = Math.cos(randomAngle) * distance;
+                const yOffset = Math.sin(randomAngle) * distance;
+
+                // Aplica a transformação de destruição
+                circle.style.transform = `translate(${xOffset}px, ${yOffset}px) scale(0)`;
+                circle.style.opacity = "0";
+
+                // Remove o elemento após a animação
+                setTimeout(() => circle.remove(), 800);
+            });
+        }
+
+        // Função para desenhar um círculo com animação
+        function drawCircle(x, y, radius) {
+            const circle = document.createElement("div");
+            circle.classList.add("circle");
+            circle.style.width = `${radius * 2}px`;
+            circle.style.height = `${radius * 2}px`;
+            circle.style.left = `${x - radius}px`;
+            circle.style.top = `${y - radius}px`;
+            canvas.appendChild(circle);
+
+            // Delay para ativar a animação (para permitir a transição CSS)
+            setTimeout(() => {
+                circle.style.transform = "scale(1)";
+                circle.style.opacity = "1";
+            }, 50);
+        }
+
+        // Função para desenhar os diferentes estados
+        function drawState(state) {
+            clearCanvas();
+
+            setTimeout(() => { // Aguarda a destruição antes de desenhar o próximo estado
+                switch (state) {
+                    case 1:
+                        // Estado 1: Apenas o retângulo vazio
+                        break;
+                    case 2:
+                        // Estado 2: Um círculo centralizado
+                        drawCircle(360, 360, 360);
+                        break;
+                    case 3:
+                        // Estado 3: Dois círculos lado a lado
+                        drawCircle(180, 360, 180);
+                        drawCircle(540, 360, 180);
+                        break;
+                  
+                    
+                    
+                    default:
+                        console.error("Estado inválido");
+                }
+            }, 800); // Tempo para completar a destruição
+        }
+
+        // Função para transição suave entre os estados
+        function startTransition() {
+            let currentState = 1; // Estado inicial
+            const totalStates = 3; // Número total de estados
+            const interval = 1600; // Tempo entre as transições (em milissegundos)
+
+            function nextState() {
+                drawState(currentState);
+                currentState++;
+                if (currentState <= totalStates) {
+                    setTimeout(nextState, interval);
+                }
+            }
+
+            nextState(); // Inicia a transição
+        }
+
+        // Função para desenhar um estado com animação ao ser clicado
+        function drawStateWithAnimation(state) {
+            drawState(state);
+        }
+    </script>
+</body>
+</html>

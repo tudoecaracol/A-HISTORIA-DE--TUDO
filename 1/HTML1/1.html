@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadrados em Perspectiva</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <button id="startButton">Iniciar Animação</button>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startButton = document.getElementById('startButton');
+
+        // Função para desenhar um quadrado na posição (x, y) com tamanho especificado
+        function drawSquare(x, y, size, perspective) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(perspective, perspective); // Aplicando a perspectiva ao quadrado
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(-size / 2, -size / 2, size, size);
+            ctx.restore();
+        }
+
+        // Função para calcular a sequência de Fibonacci
+        function fibonacci(n) {
+            const fib = [0, 1];
+            for (let i = 2; i < n; i++) {
+                fib.push(fib[i - 1] + fib[i - 2]);
+            }
+            return fib;
+        }
+
+        // Função para desenhar os 25 quadrados em perspectiva
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar o canvas
+
+            const fibNumbers = fibonacci(26); // Gerar os primeiros 26 números de Fibonacci (nós usamos 25)
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            let i = 1;
+            const interval = setInterval(() => {
+                if (i <= 25) {
+                    const size = fibNumbers[i] * 10; // Multiplicando pelo fator de escala
+                    const perspective = 1 - (i * 0.05); // Aplicando perspectiva, diminuindo conforme o quadrado cresce
+                    const offset = i * 10; // Deslocamento para distribuir os quadrados
+                    
+                    drawSquare(centerX + offset, centerY, size, perspective); // Desenhar o quadrado com a perspectiva
+                    i++;
+                } else {
+                    clearInterval(interval); // Parar a animação após o último quadrado
+                }
+            }, 100); // Intervalo de 100ms para mostrar os quadrados sequencialmente
+        }
+
+        // Função para iniciar a animação
+        startButton.addEventListener('click', () => {
+            draw(); // Chama a função para desenhar os quadrados sequencialmente
+        });
+    </script>
+</body>
+</html>

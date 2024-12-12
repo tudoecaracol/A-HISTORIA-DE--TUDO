@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reprodutor com Sensor de Ondas</title>
+    <style>
+        .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .sensor {
+            text-align: center;
+        }
+        .value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reprodutor com Sensor de Ondas</h1>
+    <input type="file" id="fileInput" accept="audio/*">
+    <br><br>
+    <audio id="audioPlayer" controls></audio>
+    <br><br>
+
+    <div class="container">
+        <div class="sensor">
+            <h3>Graves</h3>
+            <div class="value" id="bassValue">0</div>
+            Sensibilidade: <input type="range" id="bassSensitivity" min="1" max="10" value="5">
+        </div>
+        <div class="sensor">
+            <h3>Médios</h3>
+            <div class="value" id="midValue">0</div>
+            Sensibilidade: <input type="range" id="midSensitivity" min="1" max="10" value="5">
+        </div>
+        <div class="sensor">
+            <h3>Agudos</h3>
+            <div class="value" id="trebleValue">0</div>
+            Sensibilidade: <input type="range" id="trebleSensitivity" min="1" max="10" value="5">
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        const bassValue = document.getElementById('bassValue');
+        const midValue = document.getElementById('midValue');
+        const trebleValue = document.getElementById('trebleValue');
+
+        const bassSensitivity = document.getElementById('bassSensitivity');
+        const midSensitivity = document.getElementById('midSensitivity');
+        const trebleSensitivity = document.getElementById('trebleSensitivity');
+
+        let audioContext, audioSource, analyser, dataArray;
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                audioPlayer.src = fileURL;
+                audioPlayer.play();
+                setupAudioVisualizer();
+            }
+        });
+
+        function setupAudioVisualizer() {
+            if (audioContext) audioContext.close(); // Fecha contexto anterior, se existir.
+
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            audioSource = audioContext.createMediaElementSource(audioPlayer);
+            audioSource.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            visualize();
+        }
+
+        function visualize() {
+            requestAnimationFrame(visualize);
+            analyser.getByteFrequencyData(dataArray);
+
+            const bass = calculateFrequencyRange(0, 10) * bassSensitivity.value;
+            const mid = calculateFrequencyRange(11, 40) * midSensitivity.value;
+            const treble = calculateFrequencyRange(41, 80) * trebleSensitivity.value;
+
+            bassValue.textContent = Math.round(bass);
+            midValue.textContent = Math.round(mid);
+            trebleValue.textContent = Math.round(treble);
+        }
+
+        function calculateFrequencyRange(startIndex, endIndex) {
+            let sum = 0;
+            for (let i = startIndex; i <= endIndex; i++) {
+                sum += dataArray[i];
+            }
+            return sum / (endIndex - startIndex + 1);
+        }
+    </script>
+</body>
+</html>

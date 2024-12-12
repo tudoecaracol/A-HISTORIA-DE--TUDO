@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequência de Fibonacci com Loop</title>
+    <style>
+        .square {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sequência de Fibonacci</h1>
+    <div id="output"></div>
+
+    <script>
+        // Inicializando os primeiros dois números da sequência de Fibonacci
+        let a = 0, b = 1;
+        let output = document.getElementById('output');
+
+        // Exibe o primeiro número como quadrado
+        output.innerHTML += `<div class="square">${a}</div> <br>`;
+
+        // Função para gerar a sequência a cada 1 segundo
+        setInterval(function() {
+            // Exibe os dois números como quadrados
+            output.innerHTML += `<div class="square">${a}</div> + <div class="square">${b}</div> = <div class="square">${a + b}</div> <br>`;
+            // Atualizando os valores de a e b para a próxima iteração
+            let temp = a;
+            a = b;
+            b = temp + b;
+        }, 1000); // 1000 milissegundos = 1 segundo
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #ff5733;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #ffc300;
+}
+
+#progressContainer {
+    width: 80%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 10px auto;
+    overflow: hidden;
+}
+
+#progressBar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff5733, #ffc300);
+    transition: width 0.2s ease-in-out;
+}
+
+#spiralCanvas {
+    display: block;
+    margin: 20px auto;
+    background: #000;
+    animation: festaCores 2s infinite alternate;
+}
+
+@keyframes festaCores {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+.control {
+    margin: 10px 0;
+}
+
+.control input[type="range"], .control input[type="color"] {
+    margin-left: 10px;
+}

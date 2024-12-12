@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  
+  #animation-container {
+    width: 720px;
+    height: 720px;
+    border: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #fff;
+    overflow: hidden;
+  }
+  
+  .circle {
+    position: absolute;
+    background-color: #007bff;
+    border: 2px solid #000; /* Adiciona bordas às esferas */
+    border-radius: 50%;
+    transition: transform 0.8s ease, opacity 0.8s ease; /* Suaviza transições de movimento e opacidade */
+    opacity: 0; /* Esconde inicialmente */
+  }
+  
+  .circle.visible {
+    opacity: 1; /* Mostra os círculos suavemente */
+    transform: scale(1); /* Transição suave para o tamanho final */
+  }
+  
+  .circle.hidden {
+    transform: scale(0); /* Transição para esconder */
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadrados em Espiral com Controle Deslizante</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #perspectiveSlider, #rotationSlider, #speedSlider {
+            width: 300px;
+            margin-top: 20px;
+        }
+        #sliderValue {
+            margin-top: 10px;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1200" height="1200"></canvas>
+    <button id="startButton">Iniciar Animação</button>
+
+    <!-- Controle deslizante para ajustar a perspectiva -->
+    <div class="slider-container">
+        <input type="range" id="perspectiveSlider" min="0" max="100" value="0">
+        <div id="sliderValue">Quadrados: 0</div>
+    </div>
+
+    <!-- Controle deslizante para ajustar o ângulo de rotação -->
+    <div class="slider-container">
+        <input type="range" id="rotationSlider" min="0" max="360" value="0">
+        <div id="rotationValue">Ângulo de Rotação: 0°</div>
+    </div>
+
+    <!-- Controle deslizante para ajustar a velocidade -->
+    <div class="slider-container">
+        <input type="range" id="speedSlider" min="1" max="200" value="100">
+        <div id="speedValue">Velocidade: 100ms</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startButton = document.getElementById('startButton');
+        const perspectiveSlider = document.getElementById('perspectiveSlider');
+        const sliderValue = document.getElementById('sliderValue');
+        const rotationSlider = document.getElementById('rotationSlider');
+        const rotationValue = document.getElementById('rotationValue');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+
+        // Função para desenhar um quadrado na posição (x, y) com tamanho e sombra
+        function drawSquare(x, y, size, perspective) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(perspective, perspective); // Aplicando a perspectiva ao quadrado
+
+            // Adicionar sombra para dar efeito 3D
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowBlur = 10;
+
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(-size / 2, -size / 2, size, size);
+            ctx.restore();
+        }
+
+        // Função para calcular a sequência de Fibonacci
+        function fibonacci(n) {
+            const fib = [0, 1];
+            for (let i = 2; i < n; i++) {
+                fib.push(fib[i - 1] + fib[i - 2]);
+            }
+            return fib;
+        }
+
+        let offsetRadius = 10; // Raio inicial da espiral
+        let angle = 0; // Começar no ângulo 0
+        let rotationAngle = 0; // Para a rotação da composição
+        let destroyStartIndex = 10; // Início do efeito de destruição (após o 10º quadrado)
+        let interval; // Para controlar a animação
+
+        // Função para desenhar os quadrados em espiral com base no controle deslizante
+        function draw(perspectiveValue) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpar o canvas
+
+            const fibNumbers = fibonacci(26); // Gerar os primeiros 26 números de Fibonacci
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxSquares = Math.round(perspectiveSlider.value); // Quantidade de quadrados baseados no valor do slider
+
+            // Desenhar os quadrados em espiral
+            ctx.save();
+            ctx.translate(centerX, centerY); // Centrar a composição
+
+            // Rotacionar a composição inteira
+            ctx.rotate(rotationAngle);
+
+            for (let i = 1; i <= maxSquares; i++) {
+                const size = fibNumbers[i] * 10; // Multiplicando pelo fator de escala
+                const perspective = perspectiveValue - (i * 0.05); // Aplicando perspectiva com base no valor do slider
+
+                // Calcular a posição no caminho espiral
+                const x = offsetRadius * Math.cos(angle);
+                const y = offsetRadius * Math.sin(angle);
+
+                // Para os quadrados após o 10º, aplicar efeito de redução/destroi
+                let scaleFactor = 1;
+                if (i >= destroyStartIndex) {
+                    const collapseFactor = (i - destroyStartIndex) / (maxSquares - destroyStartIndex); // Escala progressiva para quadrados maiores
+                    scaleFactor = Math.max(0.2, 1 - collapseFactor); // Faz os quadrados menores e os próximos se aproximam do centro
+                }
+
+                // Desenhar o quadrado com a escala aplicada
+                drawSquare(x, y, size * scaleFactor, perspective);
+
+                // Atualizar o ângulo e o raio para a próxima posição na espiral
+                angle += Math.PI / 6; // Aumentar o ângulo para formar uma espiral
+                offsetRadius += size / 4; // Aumentar o raio para a espiral se expandir com o tamanho dos quadrados
+            }
+
+            ctx.restore();
+        }
+
+        // Atualizar a quantidade de quadrados e a perspectiva quando o slider for movido
+        perspectiveSlider.addEventListener('input', () => {
+            const perspectiveValue = 1 - (perspectiveSlider.value / 100); // Converter valor do slider em perspectiva
+            sliderValue.textContent = `Quadrados: ${Math.round(perspectiveSlider.value)}`; // Exibir a quantidade de quadrados
+            draw(perspectiveValue); // Chama a função para desenhar os quadrados com a nova perspectiva
+        });
+
+        // Atualizar o ângulo de rotação
+        rotationSlider.addEventListener('input', () => {
+            rotationAngle = rotationSlider.value * Math.PI / 180; // Converter valor do slider para radianos
+            rotationValue.textContent = `Ângulo de Rotação: ${rotationSlider.value}°`;
+            draw(1 - (perspectiveSlider.value / 100)); // Re-desenha com o novo ângulo
+        });
+
+        // Atualizar a velocidade da animação
+        speedSlider.addEventListener('input', () => {
+            speedValue.textContent = `Velocidade: ${speedSlider.value}ms`;
+            clearInterval(interval); // Para a animação anterior
+            startAnimation(); // Inicia a animação com a nova velocidade
+        });
+
+        // Função para iniciar a animação de rotação e destruição
+        function startAnimation() {
+            interval = setInterval(() => {
+                rotationAngle += 2 * Math.PI / 180; // Rotação gradual da composição
+                const perspectiveValue = 1 - (perspectiveSlider.value / 100);
+                draw(perspectiveValue); // Desenha os quadrados com a rotação e perspectiva
+
+                // Looping de destruição: depois de 25 quadrados, reinicia a animação
+                if (offsetRadius > 500) {
+                    offsetRadius = 10; // Reinicia o raio para a próxima "volta"
+                }
+            }, speedSlider.value); // Atualiza a cada intervalo de tempo baseado na velocidade
+        }
+
+        startButton.addEventListener('click', startAnimation);
+    </script>
+</body>
+</html>
